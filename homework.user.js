@@ -17,7 +17,8 @@
     const urlParams = new URLSearchParams(window.location.search);
     // 配置快捷键映射
     const keyFxMap = {
-        's': '#btn-save',          // s键 -> 保存
+        'F1': '.fv__ui-button.fv__ui-directive-controller.fv__ui-directive-tooltip[name="pencil-tool"]',          // s键 -> 保存
+        'F2': '.fv__ui-button.fv__ui-directive-controller.fv__ui-directive-tooltip[name="eraser-tool"]',
         'Enter': '#btn-save'     // 回车 -> 提交
     };
     // 批改题目快捷键映射
@@ -73,7 +74,7 @@
                         event.preventDefault();
                         confirmBtn.click();
                         // 添加点击反馈效果
-                        showClickFeedback(confirmBtn);
+                        // showClickFeedback(confirmBtn);
                     }
                 }
             }
@@ -96,7 +97,7 @@
                             event.preventDefault();
                             btn.click();
                             // 添加点击反馈效果
-                            showClickFeedback(btn);
+                            // showClickFeedback(btn);
                         }
                     }
                 }
@@ -117,7 +118,7 @@
                         event.preventDefault();
                         confirmBtn.click();
                         // 添加点击反馈效果
-                        showClickFeedback(confirmBtn);
+                        // showClickFeedback(confirmBtn);
                     }
                 }
             }
@@ -131,7 +132,7 @@
                         event.preventDefault();
                         btn.click();
                         // 添加点击反馈效果
-                        showClickFeedback(btn);
+                        // showClickFeedback(btn);
                     }
                 }
             }
@@ -159,11 +160,9 @@
         helpDiv.style.zIndex = '9999';
         helpDiv.innerHTML = `
             <h3>快捷键帮助</h3>
+            <p>F1: 铅笔工具</p>
+            <p>F2: 橡皮工具</p>
             <p>Tab: 选择成绩输入框</p>
-            <p>2: 部分正确</p>
-            <p>3: 错误</p>
-            <p>←/→: 上一题/下一题</p>
-            <p>S: 保存</p>
             <p>Enter: 提交</p>
         `;
         document.body.appendChild(helpDiv);

@@ -13,17 +13,27 @@
     'use strict';
     
     const currentUrl = window.location.href;
+    console.log('当前URL:', currentUrl);
     const urlParams = new URLSearchParams(window.location.search);
     // 配置快捷键映射
-    const keyMap = {
+    const keyFxMap = {
         's': '#btn-save',          // s键 -> 保存
         'Enter': '#btn-save'     // 回车 -> 提交
     };
+    // 批改题目快捷键映射
+    const keyPiyueMap = {
+        'Enter': '.btn[value="提交并继续批阅"]',     // 回车 -> 提交
+        's': '.btn.zancun',              // s键 -> 暂存
+        'Escape': 'div.sub-back:nth-child(16) .btn[value="取消"]',    // Esc键 -> 取消
+        ' ': '.btn.btn-success', // 空格 -> 开始批阅
+    };
     // 判断当前页面类型
     if (/\/teacher\/fx\//.test(currentUrl)) {
+        console.log('检测到批改页');
         initFxPage();
     } 
     else if (/\/teacher\/beforePiYue\?/.test(currentUrl)) {
+        console.log('检测到批改前页面');
         initBeforePiYuePage();
     }
 
@@ -31,7 +41,8 @@
     function initFxPage() {
         const container = document.querySelector('#pdf-ui');
         if (container) {
-            setupShortcuts();
+            // console.log('批改页加载完成');
+            setupFxShortcuts();
             showHelpTooltip();
         } else {
             setTimeout(initFxPage, 500);
@@ -39,26 +50,89 @@
     }
 
     function initBeforePiYuePage() {
-        const container = document.querySelector('.container');
+        const container = document.querySelector('.btn.btn-success');
         if (container) {
-            setupShortcuts();
-            showHelpTooltip();
+            // console.log('批改前页加载完成');
+            setupPiYueShortcuts();
+            // showHelpTooltip();
         } else {
             setTimeout(initBeforePiYuePage, 500);
         }
     }
 
-    // 设置快捷键
-    function setupShortcuts() {
+    // 设置批卷页快捷键
+    function setupFxShortcuts() {
         document.addEventListener('keydown', function(event) {
-            const selector = keyMap[event.key];
-            if (selector) {
-                const btn = document.querySelector(selector);
-                if (btn) {
-                    event.preventDefault();
-                    btn.click();
-                    // 添加点击反馈效果
-                    showClickFeedback(btn);
+            // 检测是否有弹窗存在
+            if (isModalVisible()) {
+                console.log('检测到弹窗，忽略快捷键');
+                if (event.key === 'Enter') {
+                    const confirmBtn = document.querySelector('.zeromodal-container.alert .btn-primary');
+                    if (confirmBtn) {
+                        console.log('点击弹窗确认按钮');
+                        event.preventDefault();
+                        confirmBtn.click();
+                        // 添加点击反馈效果
+                        showClickFeedback(confirmBtn);
+                    }
+                }
+            }
+            else {
+                if (event.key === 'h') {
+                    // console.log('显示帮助提示');
+                    // showHelpTooltip();
+                    // return; // 阻止默认行为
+                }
+                else if (event.key === 'Tab') {
+                    const input = document.querySelector('input[name="zycj"]');
+                    input.focus(); // 自动聚焦到输入框
+                    return; // 阻止默认行为
+                }
+                else {
+                    const selector = keyFxMap[event.key];
+                    if (selector) {
+                        const btn = document.querySelector(selector);
+                        if (btn) {
+                            event.preventDefault();
+                            btn.click();
+                            // 添加点击反馈效果
+                            showClickFeedback(btn);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // 设置批卷页前页快捷键
+    function setupPiYueShortcuts() {
+        document.addEventListener('keydown', function(event) {
+            // 检测是否有弹窗存在
+            if (isModalVisible()) {
+                console.log('检测到弹窗，忽略快捷键');
+                if (event.key === 'Enter') {
+                    const confirmBtn = document.querySelector('.zeromodal-container.alert .btn-primary');
+                    if (confirmBtn) {
+                        console.log('点击弹窗确认按钮');
+                        event.preventDefault();
+                        confirmBtn.click();
+                        // 添加点击反馈效果
+                        showClickFeedback(confirmBtn);
+                    }
+                }
+            }
+            else {
+                const selector = keyPiyueMap[event.key];
+                if (selector) {
+                    console.log('检测到快捷键:', event.key, '对应按钮选择器:', selector);
+                    const btn = document.querySelector(selector);
+                    if (btn) {
+                        console.log('找到按钮:', btn);
+                        event.preventDefault();
+                        btn.click();
+                        // 添加点击反馈效果
+                        showClickFeedback(btn);
+                    }
                 }
             }
         });
@@ -85,7 +159,7 @@
         helpDiv.style.zIndex = '9999';
         helpDiv.innerHTML = `
             <h3>快捷键帮助</h3>
-            <p>1: 正确</p>
+            <p>Tab: 选择成绩输入框</p>
             <p>2: 部分正确</p>
             <p>3: 错误</p>
             <p>←/→: 上一题/下一题</p>
@@ -95,4 +169,9 @@
         document.body.appendChild(helpDiv);
     }
 
+    // 检测弹窗是否存在
+    function isModalVisible() {
+        const modal = document.querySelector('.zeromodal-container.alert');
+        return modal && window.getComputedStyle(modal).display !== 'none';
+    }
 })();

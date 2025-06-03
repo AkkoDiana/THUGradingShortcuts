@@ -61,6 +61,12 @@
         }
     }
 
+    // 检查是否在输入框中
+    function isInputFocused() {
+        const activeElement = document.activeElement;
+        return activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
+    }
+
     // 设置批卷页快捷键
     function setupFxShortcuts() {
         document.addEventListener('keydown', function(event) {
@@ -108,6 +114,11 @@
     // 设置批卷页前页快捷键
     function setupPiYueShortcuts() {
         document.addEventListener('keydown', function(event) {
+            // 如果在输入框中，忽略快捷键
+            if (isInputFocused()) {
+                // console.log('当前在输入框中，忽略快捷键:', event.key);
+                return;
+            }
             // 检测是否有弹窗存在
             if (isModalVisible()) {
                 console.log('检测到弹窗，忽略快捷键');

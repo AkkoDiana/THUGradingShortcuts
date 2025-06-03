@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         THUGradingShortcuts
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description 为网络学堂添加快捷键支持，提高批改效率
 // @author       你的名字
 // @match        https://learn.tsinghua.edu.cn/f/wlxt/kczy/xszy/teacher/fx/*
@@ -64,7 +64,7 @@
     // 检查是否在输入框中
     function isInputFocused() {
         const activeElement = document.activeElement;
-        return activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
+        return activeElement.tagName === 'TEXTAREA';
     }
 
     // 设置批卷页快捷键

@@ -51,7 +51,7 @@
     }
 
     function initBeforePiYuePage() {
-        const container = document.querySelector('.btn.btn-success');
+        const container = document.querySelector('.detail-title');
         if (container) {
             // console.log('批改前页加载完成');
             setupPiYueShortcuts();

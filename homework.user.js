@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name         批卷系统快捷键助手
+// @name         THUGradingShortcuts
 // @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description 为学校批卷系统添加快捷键支持，提高批改效率
+// @version      1.1
+// @description 为网络学堂添加快捷键支持，提高批改效率
 // @author       你的名字
 // @match        https://learn.tsinghua.edu.cn/f/wlxt/kczy/xszy/teacher/fx/*
 // @match        https://learn.tsinghua.edu.cn/f/wlxt/kczy/xszy/teacher/beforePiYue*
-// @grant        none
+// @license      MIT
 // ==/UserScript==
 
 (function() {
@@ -17,7 +17,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     // 配置快捷键映射
     const keyFxMap = {
-        'F1': '.fv__ui-button.fv__ui-directive-controller.fv__ui-directive-tooltip[name="pencil-tool"]',          // s键 -> 保存
+        'F1': '.fv__ui-button.fv__ui-directive-controller.fv__ui-directive-tooltip[name="pencil-tool"]', 
         'F2': '.fv__ui-button.fv__ui-directive-controller.fv__ui-directive-tooltip[name="eraser-tool"]',
         'Enter': '#btn-save'     // 回车 -> 提交
     };
@@ -55,7 +55,7 @@
         if (container) {
             // console.log('批改前页加载完成');
             setupPiYueShortcuts();
-            // showHelpTooltip();
+            showPiyueHelpTooltip();
         } else {
             setTimeout(initBeforePiYuePage, 500);
         }
@@ -177,6 +177,27 @@
             <p>Enter: 提交</p>
         `;
         document.body.appendChild(helpDiv);
+    }
+
+    // 显示帮助提示
+    function showPiyueHelpTooltip() {
+        const helpPiyueDiv = document.createElement('div');
+        helpPiyueDiv.style.position = 'fixed';
+        helpPiyueDiv.style.bottom = '40px';
+        helpPiyueDiv.style.left = '40px';
+        helpPiyueDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        helpPiyueDiv.style.color = 'white';
+        helpPiyueDiv.style.padding = '20px';
+        helpPiyueDiv.style.borderRadius = '5px';
+        helpPiyueDiv.style.zIndex = '9999';
+        helpPiyueDiv.innerHTML = `
+            <h3>快捷键帮助</h3>
+            <p style="margin: 8px 0; color: white !important;">回车: 提交并继续批阅</p>
+            <p style="margin: 8px 0; color: white !important;">s: 挂起并继续批阅</p>
+            <p style="margin: 8px 0; color: white !important;">Esc: 取消</p>
+            <p style="margin: 8px 0; color: white !important;">空格: 在线批注作业</p>
+        `;
+        document.body.appendChild(helpPiyueDiv);
     }
 
     // 检测弹窗是否存在

@@ -9,7 +9,9 @@
 [Greasy Fork](https://greasyfork.org/zh-CN/scripts/538174-thugradingshortcuts)安装
 ## 使用说明
 给如下两个页面加入了若干快捷键
-![[./doc/Fig1.png]]
-![[./doc/Fig2.png]]
+
+![](/doc/Fig1.png)
+
+![](/doc/Fig2.png)
 ## 授权License
 本开源代码采用[MIT LICENSE](./LICENSE)
